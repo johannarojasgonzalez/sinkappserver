@@ -21,16 +21,21 @@ public class SinkBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private Long sinkStatutId;
+	private Long sinkStatusId;
 	private Long sinkTypeId;
-	private Long lenght;
-	private Long pipeLineDiameter;
-	private Long pipeLineLenght;
+	private Long length;
+	private Long pipeLineDiameterId;
+	private Long pipeLineLength;
+	private Long plumbOptionId;
 	private String reference;
 	private String imageBefore;
 	private String imageAfter;
 	private String observations;
-	private AddressBean adresse;
+	private String fileName;
+	private AddressBean address;
+	private ClientBean client;
+	private UserBean userCreation;
+	private UserBean userUpdate;
 	private Date sinkCreationDate;
 	private Date sinkUpdateDate;
 
@@ -87,12 +92,42 @@ public class SinkBean implements Serializable {
 
 	@ManyToOne()
 	@JoinColumn(name = "SNK_ADDRESS_ID", nullable = false)
-	public AddressBean getAdresse() {
-		return adresse;
+	public AddressBean getAddress() {
+		return address;
 	}
 
-	public void setAdresse(AddressBean adresse) {
-		this.adresse = adresse;
+	public void setAddress(AddressBean address) {
+		this.address = address;
+	}
+
+	@ManyToOne()
+	@JoinColumn(name = "SNK_CLIENT_ID", nullable = false)
+	public ClientBean getClient() {
+		return client;
+	}
+
+	public void setClient(ClientBean client) {
+		this.client = client;
+	}
+	
+	@ManyToOne()
+	@JoinColumn(name = "SNK_USER_CRE_ID", nullable = false)
+	public UserBean getUserCreation() {
+		return userCreation;
+	}
+
+	public void setUserCreation(UserBean userCreation) {
+		this.userCreation = userCreation;
+	}
+
+	@ManyToOne()
+	@JoinColumn(name = "SNK_USER_UPD_ID", nullable = false)
+	public UserBean getUserUpdate() {
+		return userUpdate;
+	}
+
+	public void setUserUpdate(UserBean userUpdate) {
+		this.userUpdate = userUpdate;
 	}
 
 	@Temporal(TemporalType.DATE)
@@ -115,13 +150,13 @@ public class SinkBean implements Serializable {
 		this.sinkUpdateDate = sinkUpdateDate;
 	}
 
-	@Column(name = "SNK_STATUT_ID")
-	public Long getSinkStatutId() {
-		return sinkStatutId;
+	@Column(name = "SNK_STATUS_ID")
+	public Long getSinkStatusId() {
+		return sinkStatusId;
 	}
 
-	public void setSinkStatutId(Long sinkStatutId) {
-		this.sinkStatutId = sinkStatutId;
+	public void setSinkStatusId(Long sinkStatusId) {
+		this.sinkStatusId = sinkStatusId;
 	}
 
 	@Column(name = "SNK_TYPE_ID")
@@ -133,31 +168,22 @@ public class SinkBean implements Serializable {
 		this.sinkTypeId = sinkTypeId;
 	}
 
-	@Column(name = "SNK_LENGHT")
-	public Long getLenght() {
-		return lenght;
+	@Column(name = "SNK_LENGTH")
+	public Long getLength() {
+		return length;
 	}
 
-	public void setLenght(Long lenght) {
-		this.lenght = lenght;
+	public void setLength(Long length) {
+		this.length = length;
 	}
 
-	@Column(name = "SNK_PIPELINE_DIAMETER")
-	public Long getPipeLineDiameter() {
-		return pipeLineDiameter;
+	@Column(name = "SNK_PIPELINE_LENGTH")
+	public Long getPipeLineLength() {
+		return pipeLineLength;
 	}
 
-	public void setPipeLineDiameter(Long pipeLineDiameter) {
-		this.pipeLineDiameter = pipeLineDiameter;
-	}
-
-	@Column(name = "SNK_PIPELINE_LENGHT")
-	public Long getPipeLineLenght() {
-		return pipeLineLenght;
-	}
-
-	public void setPipeLineLenght(Long pipeLineLenght) {
-		this.pipeLineLenght = pipeLineLenght;
+	public void setPipeLineLength(Long pipeLineLength) {
+		this.pipeLineLength = pipeLineLength;
 	}
 
 	@Column(name = "SNK_OBSERVATIONS", length = 500)
@@ -167,6 +193,51 @@ public class SinkBean implements Serializable {
 
 	public void setObservations(String observations) {
 		this.observations = observations;
+	}
+	
+	@Column(name = "SNK_FILE_NAME", length = 500)
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	@Column(name = "SNK_PIPELINE_DIAMETER_ID")
+	public Long getPipeLineDiameterId() {
+		return pipeLineDiameterId;
+	}
+
+	public void setPipeLineDiameterId(Long pipeLineDiameterId) {
+		this.pipeLineDiameterId = pipeLineDiameterId;
+	}
+
+	@Column(name = "SNK_PLUMB_OPTION_ID")
+	public Long getPlumbOptionId() {
+		return plumbOptionId;
+	}
+
+	public void setPlumbOptionId(Long plumbOptionId) {
+		this.plumbOptionId = plumbOptionId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		SinkBean sinkBean = (SinkBean) o;
+
+		return reference.equals(sinkBean.reference);
+
+	}
+
+	@Override
+	public int hashCode() {
+		return reference.hashCode();
 	}
 
 }

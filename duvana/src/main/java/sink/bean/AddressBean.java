@@ -20,6 +20,7 @@ public class AddressBean implements Serializable {
 	private String zipCode;
 	private String city;
 	private String country;
+	private String neighborhood;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -75,6 +76,15 @@ public class AddressBean implements Serializable {
 
 	public void setCountry(String country) {
 		this.country = country;
+	}
+
+	@Column(name = "ADR_NEIGHBORHOOD", length = 250)
+	public String getNeighborhood() {
+		return neighborhood;
+	}
+
+	public void setNeighborhood(String neighborhood) {
+		this.neighborhood = neighborhood;
 	}
 
 }
