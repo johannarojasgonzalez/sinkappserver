@@ -1,8 +1,8 @@
 CREATE TABLE t_sink (
 snk_id BIGINT  AUTO_INCREMENT,
 snk_reference VARCHAR(150),
-snk_image_before LONGTEXT,
-snk_image_after LONGTEXT,
+snk_image_before LONGBLOB,
+snk_image_after LONGBLOB,
 snk_address_id BIGINT,
 snk_client_id BIGINT,
 snk_user_cre_id BIGINT,

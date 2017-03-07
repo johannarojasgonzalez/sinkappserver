@@ -82,7 +82,7 @@ public class SinkServiceImpl implements SinkService {
 	}
 	
 	public List<SinkBean> findAllSinks(Date startDate, Date endDate) {
-		return sinkDao.findAllSinks(startDate, endDate);
+		return null;
 	}
 	
 	private void updateData(List<String> fileNames, SinkBean sink, SinkBean existingSink) {

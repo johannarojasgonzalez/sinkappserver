@@ -1,6 +1,7 @@
 package sink.bean;
 
 import java.io.Serializable;
+import java.sql.Blob;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -9,10 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.Type;
+
+import sink.dao.impl.deserializer.ImageDaoDeserializer;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @Table(name = "T_SINK")
@@ -28,8 +36,6 @@ public class SinkBean implements Serializable {
 	private Long pipeLineLength;
 	private Long plumbOptionId;
 	private String reference;
-	private String imageBefore;
-	private String imageAfter;
 	private String observations;
 	private String fileName;
 	private AddressBean address;
@@ -38,6 +44,14 @@ public class SinkBean implements Serializable {
 	private UserBean userUpdate;
 	private Date sinkCreationDate;
 	private Date sinkUpdateDate;
+	
+	@JsonDeserialize(using = ImageDaoDeserializer.class)
+	@Lob @Type(type="org.hibernate.type.BlobType")	
+	private Blob imageBefore;
+	
+	@JsonDeserialize(using = ImageDaoDeserializer.class)
+	@Lob @Type(type="org.hibernate.type.BlobType")	
+	private Blob imageAfter;
 
 	public SinkBean() {
 
@@ -72,21 +86,21 @@ public class SinkBean implements Serializable {
 		this.reference = reference;
 	}
 
-	@Column(name = "SNK_IMAGE_BEFORE", columnDefinition = "ntext")
-	public String getImageBefore() {
+	@Column(name = "SNK_IMAGE_BEFORE")
+	public Blob getImageBefore() {
 		return imageBefore;
 	}
 
-	public void setImageBefore(String imageBefore) {
+	public void setImageBefore(Blob imageBefore) {
 		this.imageBefore = imageBefore;
 	}
 
-	@Column(name = "SNK_IMAGE_AFTER", columnDefinition = "ntext")
-	public String getImageAfter() {
+	@Column(name = "SNK_IMAGE_AFTER")
+	public Blob getImageAfter() {
 		return imageAfter;
 	}
 
-	public void setImageAfter(String imageAfter) {
+	public void setImageAfter(Blob imageAfter) {
 		this.imageAfter = imageAfter;
 	}
 
