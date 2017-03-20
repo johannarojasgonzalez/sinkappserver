@@ -1,7 +1,7 @@
 package sink.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import sink.bean.SinkBean;
 
@@ -20,6 +20,7 @@ public interface SinkCustomDao {
 	 * @param endDate
 	 * @return
 	 */
-	List<SinkBean> findAllSinks(Date startDate, Date endDate);
+	ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate);
+	
 }
  	

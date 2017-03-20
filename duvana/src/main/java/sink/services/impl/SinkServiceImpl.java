@@ -33,6 +33,15 @@ public class SinkServiceImpl implements SinkService {
 
 	@Autowired
 	private ClientDao clientDao;
+	
+	public boolean checkReferenceExists(SinkBean sink) {
+		ClientBean client = getClient(sink);
+		if (client != null) {
+			SinkBean existingSink = sinkDao.findByReferenceAndClient(sink.getReference(), client.getId());
+			return existingSink != null;
+		}
+		return false;
+	}
 
 	public List<String> prepareAndSave(Set<SinkBean> sinks, UserBean user) {
 		List<String> fileNames = new ArrayList<String>();
@@ -81,8 +90,8 @@ public class SinkServiceImpl implements SinkService {
 		return null;
 	}
 	
-	public List<SinkBean> findAllSinks(Date startDate, Date endDate) {
-		return null;
+	public ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate) {
+		return sinkDao.findAllSinksByDate(startDate, endDate);
 	}
 	
 	private void updateData(List<String> fileNames, SinkBean sink, SinkBean existingSink) {
@@ -133,8 +142,16 @@ public class SinkServiceImpl implements SinkService {
 		if (sink.getClient() != null) {
 			String clientName = sink.getClient().getName();
 			client = clientDao.findByName(clientName);
+			if(client == null) {
+				LOGGER.warn(String.format("The client %s is not known", clientName));
+			}
 		}
 		return client;
+	}
+
+	public boolean deleteSink(SinkBean sinkBean) {
+		sinkDao.delete(sinkBean.getId());
+		return !sinkDao.exists(sinkBean.getId());
 	}
 
 }

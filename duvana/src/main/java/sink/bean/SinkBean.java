@@ -19,8 +19,10 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.Type;
 
 import sink.dao.impl.deserializer.ImageDaoDeserializer;
+import sink.dao.impl.serializer.ImageDaoSerializer;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "T_SINK")
@@ -46,10 +48,12 @@ public class SinkBean implements Serializable {
 	private Date sinkUpdateDate;
 	
 	@JsonDeserialize(using = ImageDaoDeserializer.class)
+	@JsonSerialize(using = ImageDaoSerializer.class)
 	@Lob @Type(type="org.hibernate.type.BlobType")	
 	private Blob imageBefore;
 	
 	@JsonDeserialize(using = ImageDaoDeserializer.class)
+	@JsonSerialize(using = ImageDaoSerializer.class)
 	@Lob @Type(type="org.hibernate.type.BlobType")	
 	private Blob imageAfter;
 

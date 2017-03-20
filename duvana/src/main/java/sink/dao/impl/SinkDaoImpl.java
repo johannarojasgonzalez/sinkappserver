@@ -1,11 +1,11 @@
 package sink.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +23,11 @@ public class SinkDaoImpl extends AbstractDao implements SinkCustomDao {
 	private SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
-	public List<SinkBean> findAllSinks(Date startDate, Date endDate) {
-		Criteria criteria = getCurrentSession().createCriteria(SinkBean.class);
-		return criteria.list();
+	public ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate) {
+		Query query = getCurrentSession().createQuery("FROM SinkBean WHERE sinkCreationDate BETWEEN :startDate AND :endDate");
+		query.setParameter("startDate", startDate);
+		query.setParameter("endDate", endDate);
+		return (ArrayList<SinkBean>) query.list();
 	}
 
 	@SuppressWarnings("unchecked")

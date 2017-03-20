@@ -1,5 +1,6 @@
 package sink.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,13 @@ public interface SinkService {
 	 * @return a list with file names (it means the bean has been saved)
 	 */
 	List<String> prepareAndSave(Set<SinkBean> sinks, UserBean user);
+	
+	/**
+	 * Check if reference exists
+	 * @param sinkBean
+	 * @return
+	 */	
+	boolean checkReferenceExists(SinkBean sinkBean);
 
 	/**
 	 * 
@@ -31,5 +39,12 @@ public interface SinkService {
 	 * @param endDate
 	 * @return
 	 */
-	List<SinkBean> findAllSinks(Date startDate, Date endDate);
+	ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate);
+	
+	/**
+	 * 
+	 * @param sinkBean
+	 * @return
+	 */
+	boolean deleteSink(SinkBean sinkBean);
 }
