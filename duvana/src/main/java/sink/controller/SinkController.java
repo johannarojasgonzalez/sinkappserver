@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +26,8 @@ import sink.services.UserService;
 @RestController
 public class SinkController {
 
+	private static final String DD_MM_YYYY = "dd-MM-yyyy";
+
 	private static final Logger LOGGER = LoggerFactory
 			.getLogger(SinkController.class);
 
@@ -36,14 +37,6 @@ public class SinkController {
 	@Autowired
 	private UserService userService;
 
-	private static final String template = "Hello, %s!";
-
-	@RequestMapping("/sink")
-	public SinkBean sink(
-			@RequestParam(value = "name", defaultValue = "World") String name) {
-		sinkService.findAllSinksByDate(null, null);
-		return new SinkBean(String.format(template, name));
-	}
 
 	@RequestMapping(value = "/saveFromFile/{userImi}", method = RequestMethod.POST)
 	@ResponseBody
@@ -57,30 +50,36 @@ public class SinkController {
 		return null;
 	}
 
-	@RequestMapping(value = "/save/{userImi}/{checkReferenceExits}")
+	@RequestMapping(value = "/save/{userImi}/{checkReferenceExits}/{updateAll}")
 	@ResponseBody
 	public Long save(@PathVariable("userImi") String userImi,
 			@PathVariable("checkReferenceExits") String checkReferenceExits,
+			@PathVariable("updateAll") String updateAll,
 			@RequestBody SinkBean sink) {
 		// check if reference exists
-		if (Boolean.valueOf(checkReferenceExits)
-				&& sinkService.checkReferenceExists(sink)) {
+		if (Boolean.valueOf(checkReferenceExits) && sinkService.checkReferenceExists(sink)) {
 			return 0L;
 		}
 		UserBean user = getSavedUser(userImi);
 		if (user != null) {
-			SinkBean createdSink = sinkService.prepareAndSave(sink, user);
+			SinkBean createdSink;
+			if(Boolean.valueOf(updateAll)) {
+				createdSink = sinkService.update(sink, user);
+			} else {
+				createdSink = sinkService.prepareAndSave(sink, user);
+			}
 			return createdSink != null ? createdSink.getId() : null;
 		}
 		LOGGER.warn(String.format("The user %s is not known", userImi));
 		return null;
 	}
 
-	@RequestMapping(value = "/search/{startDate}/{endDate}")
+	@RequestMapping(value = "/search/{startDate}/{endDate}/{clientName}")
 	@ResponseBody
 	public SinkBean[] search(
-			@PathVariable("startDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date startDate,
-			@PathVariable("endDate") @DateTimeFormat(pattern = "dd-MM-yyyy") Date endDate) {
+			@PathVariable("startDate") @DateTimeFormat(pattern = DD_MM_YYYY) Date startDate,
+			@PathVariable("endDate") @DateTimeFormat(pattern = DD_MM_YYYY) Date endDate,
+			@PathVariable("clientName") String clientName) {
 		// check if reference exists
 		if (startDate == null) {
 			return null;
@@ -90,7 +89,7 @@ public class SinkController {
 			endDate = new DateTime().plusDays(1).withTimeAtStartOfDay()
 					.toDate();
 		}
-		ArrayList<SinkBean> results = sinkService.findAllSinksByDate(startDate, endDate);
+		ArrayList<SinkBean> results = sinkService.findAllSinksByDateAnClient(startDate, endDate, clientName);
 		if(CollectionUtils.isEmpty(results)) {
 			return null;
 		}

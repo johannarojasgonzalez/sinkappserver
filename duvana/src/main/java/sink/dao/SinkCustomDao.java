@@ -20,7 +20,7 @@ public interface SinkCustomDao {
 	 * @param endDate
 	 * @return
 	 */
-	ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate);
+	ArrayList<SinkBean> findAllSinksByDateAnClient(Date startDate, Date endDate, String clientName);
 	
 }
  	

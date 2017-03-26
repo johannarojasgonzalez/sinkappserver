@@ -32,6 +32,14 @@ public interface SinkService {
 	 * @return
 	 */
 	SinkBean prepareAndSave(SinkBean sinks, UserBean user);
+	
+	/**
+	 * 
+	 * @param sinks
+	 * @param user
+	 * @return
+	 */
+	SinkBean update(SinkBean sinks, UserBean user);
 
 	/**
 	 * 
@@ -39,7 +47,7 @@ public interface SinkService {
 	 * @param endDate
 	 * @return
 	 */
-	ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate);
+	ArrayList<SinkBean> findAllSinksByDateAnClient(Date startDate, Date endDate, String clientName);
 	
 	/**
 	 * 

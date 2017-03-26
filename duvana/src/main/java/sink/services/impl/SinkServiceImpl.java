@@ -1,5 +1,6 @@
 package sink.services.impl;
 
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -90,8 +92,8 @@ public class SinkServiceImpl implements SinkService {
 		return null;
 	}
 	
-	public ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate) {
-		return sinkDao.findAllSinksByDate(startDate, endDate);
+	public ArrayList<SinkBean> findAllSinksByDateAnClient(Date startDate, Date endDate, String clientName) {
+		return sinkDao.findAllSinksByDateAnClient(startDate, endDate, clientName);
 	}
 	
 	private void updateData(List<String> fileNames, SinkBean sink, SinkBean existingSink) {
@@ -126,7 +128,6 @@ public class SinkServiceImpl implements SinkService {
 		existingSink.setSinkTypeId(sink.getSinkTypeId());
 		existingSink.setAddress(createAddress(sink));
 		existingSink.setSinkUpdateDate(new Date());
-
 		return sinkDao.save(existingSink);
 	}
 
@@ -152,6 +153,26 @@ public class SinkServiceImpl implements SinkService {
 	public boolean deleteSink(SinkBean sinkBean) {
 		sinkDao.delete(sinkBean.getId());
 		return !sinkDao.exists(sinkBean.getId());
+	}
+
+	public SinkBean update(SinkBean sink, UserBean user) {
+		ClientBean client = getClient(sink);
+		if (client != null) {
+			SinkBean existingSink = sinkDao.findByReferenceAndClient(sink.getReference(), client.getId());
+			if (existingSink != null) {
+				// update
+				Blob imageBefore = existingSink.getImageBefore();
+				BeanUtils.copyProperties(sink, existingSink, "address", "client", "id");
+				if(existingSink.getImageBefore() == null) {
+					existingSink.setImageBefore(imageBefore);
+				}
+				existingSink.setAddress(createAddress(sink));
+				existingSink.setSinkUpdateDate(new Date());
+				existingSink.setUserUpdate(user);
+				return sinkDao.save(existingSink);
+			}
+		}
+		return null;
 	}
 
 }

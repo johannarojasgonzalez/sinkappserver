@@ -23,10 +23,12 @@ public class SinkDaoImpl extends AbstractDao implements SinkCustomDao {
 	private SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<SinkBean> findAllSinksByDate(Date startDate, Date endDate) {
-		Query query = getCurrentSession().createQuery("FROM SinkBean WHERE sinkCreationDate BETWEEN :startDate AND :endDate");
+	public ArrayList<SinkBean> findAllSinksByDateAnClient(Date startDate, Date endDate, String clientName) {
+		String strQuery = "FROM SinkBean WHERE sinkCreationDate BETWEEN :startDate AND :endDate AND client.name = :clientName";
+		Query query = getCurrentSession().createQuery(strQuery);
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
+		query.setParameter("clientName", clientName);
 		return (ArrayList<SinkBean>) query.list();
 	}
 
