@@ -36,11 +36,10 @@ public class SinkServiceImpl implements SinkService {
 	@Autowired
 	private ClientDao clientDao;
 	
-	public boolean checkReferenceExists(SinkBean sink) {
+	public boolean checkReferenceExists(SinkBean sink, boolean stepBefore) {
 		ClientBean client = getClient(sink);
 		if (client != null) {
-			SinkBean existingSink = sinkDao.findByReferenceAndClient(sink.getReference(), client.getId());
-			return existingSink != null;
+			return findByReferenceAndClientAndStep(sink.getReference(), client.getName(), stepBefore);
 		}
 		return false;
 	}
@@ -173,6 +172,11 @@ public class SinkServiceImpl implements SinkService {
 			}
 		}
 		return null;
+	}
+
+	public boolean findByReferenceAndClientAndStep(String reference,
+			String clientName, boolean stepBefore) {
+		return !CollectionUtils.isEmpty(sinkDao.findByReferenceAndClientAndStep(reference, clientName, stepBefore));
 	}
 
 }

@@ -23,7 +23,7 @@ public interface SinkService {
 	 * @param sinkBean
 	 * @return
 	 */	
-	boolean checkReferenceExists(SinkBean sinkBean);
+	boolean checkReferenceExists(SinkBean sinkBean, boolean stepBefore);
 
 	/**
 	 * 
@@ -55,4 +55,7 @@ public interface SinkService {
 	 * @return
 	 */
 	boolean deleteSink(SinkBean sinkBean);
+	
+	public boolean findByReferenceAndClientAndStep(String reference, String clientName, boolean stepBefore);
+	
 }

@@ -45,4 +45,14 @@ public class SinkDaoImpl extends AbstractDao implements SinkCustomDao {
 		return null;
 	}
 
+	public ArrayList<SinkBean> findByReferenceAndClientAndStep(String reference,
+			String clientName, boolean stepBefore) {
+		String strQuery = "FROM SinkBean WHERE reference = :reference AND client.name = :clientName";
+		strQuery += stepBefore ? " AND imageBefore IS NOT NULL AND LENGTH(imageBefore) > 0" : " AND imageAfter IS NOT NULL AND LENGTH(imageAfter) > 0";
+		Query query = getCurrentSession().createQuery(strQuery);
+		query.setParameter("reference", reference);
+		query.setParameter("clientName", clientName);
+		return (ArrayList<SinkBean>) query.list();
+	}
+
 }

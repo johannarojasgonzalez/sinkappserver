@@ -50,14 +50,15 @@ public class SinkController {
 		return null;
 	}
 
-	@RequestMapping(value = "/save/{userImi}/{checkReferenceExits}/{updateAll}")
+	@RequestMapping(value = "/save/{userImi}/{checkReferenceExits}/{updateAll}/{stepBefore}")
 	@ResponseBody
 	public Long save(@PathVariable("userImi") String userImi,
 			@PathVariable("checkReferenceExits") String checkReferenceExits,
 			@PathVariable("updateAll") String updateAll,
+			@PathVariable("stepBefore") String stepBefore,
 			@RequestBody SinkBean sink) {
 		// check if reference exists
-		if (Boolean.valueOf(checkReferenceExits) && sinkService.checkReferenceExists(sink)) {
+		if (Boolean.valueOf(checkReferenceExits) && sinkService.checkReferenceExists(sink, Boolean.valueOf(stepBefore))) {
 			return 0L;
 		}
 		UserBean user = getSavedUser(userImi);
@@ -94,6 +95,16 @@ public class SinkController {
 			return null;
 		}
 		return  results.toArray(new SinkBean[results.size()]);
+	}
+	
+	@RequestMapping(value = "/searchPairReferenceClient/{clientName}/{reference}/{stepBefore}")
+	@ResponseBody
+	public Boolean searchPairReferenceClient(@PathVariable("clientName") String clientName,
+			@PathVariable("reference") String reference,
+			@PathVariable("stepBefore") String stepBefore) {
+		// check if pair reference-client exists
+		return sinkService.findByReferenceAndClientAndStep(reference,
+				clientName, Boolean.valueOf(stepBefore));
 	}
 	
 	@RequestMapping(value = "/delete")

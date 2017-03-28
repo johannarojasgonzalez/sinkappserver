@@ -16,6 +16,14 @@ public interface SinkCustomDao {
 	
 	/**
 	 * 
+	 * @param reference
+	 * @param clientId
+	 * @return
+	 */
+	ArrayList<SinkBean> findByReferenceAndClientAndStep(String reference, String clientName, boolean stepBefore);
+	
+	/**
+	 * 
 	 * @param startDate
 	 * @param endDate
 	 * @return
