@@ -2,11 +2,12 @@ package sink.services;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Set;
 
 import sink.bean.SinkBean;
 import sink.bean.UserBean;
+import sink.enums.ProfileEnum;
 
 public interface SinkService {
 
@@ -14,9 +15,9 @@ public interface SinkService {
 	 * 
 	 * @param sinks
 	 * @param user
-	 * @return a list with file names (it means the bean has been saved)
+	 * @return a map with file names and a flag to say it has been saved (true) or it already exists (false)
 	 */
-	List<String> prepareAndSave(Set<SinkBean> sinks, UserBean user);
+	HashMap<String, Boolean> prepareAndSave(Set<SinkBean> sinks, UserBean user, ProfileEnum profile);
 	
 	/**
 	 * Check if reference exists
@@ -56,6 +57,13 @@ public interface SinkService {
 	 */
 	boolean deleteSink(SinkBean sinkBean);
 	
+	/**
+	 * 
+	 * @param reference
+	 * @param clientName
+	 * @param stepBefore
+	 * @return
+	 */
 	public boolean findByReferenceAndClientAndStep(String reference, String clientName, boolean stepBefore);
 	
 }

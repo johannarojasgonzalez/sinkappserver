@@ -15,12 +15,14 @@ public interface SinkCustomDao {
 	SinkBean findByReferenceAndClient(String reference, Long clientId);
 	
 	/**
-	 * 
+	 * search if pair reference-client exists
+	 * if step before check also imageBefore exists
+	 * else check image after exists
 	 * @param reference
 	 * @param clientId
 	 * @return
 	 */
-	ArrayList<SinkBean> findByReferenceAndClientAndStep(String reference, String clientName, boolean stepBefore);
+	SinkBean findByReferenceAndClientAndStep(String reference, String clientName, boolean stepBefore);
 	
 	/**
 	 * 
