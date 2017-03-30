@@ -18,5 +18,5 @@ public class ClientDaoImpl extends AbstractDao implements ClientCustomDao {
 		criteria = criteria.add(Restrictions.eq("name", clientName));
 		return (ClientBean) criteria.uniqueResult();
 	}
-
+	
 }

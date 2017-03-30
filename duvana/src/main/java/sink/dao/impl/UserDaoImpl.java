@@ -13,7 +13,7 @@ import sink.dao.UserCustomDao;
 @Repository
 public class UserDaoImpl extends AbstractDao implements UserCustomDao {
 
-	public UserBean findByImiNumber(String imiNumber) {
+	public UserBean findByImeiNumber(String imiNumber) {
 		Criteria criteria = getCurrentSession().createCriteria(UserBean.class);
 		criteria = criteria.add(Restrictions.eq("imiNumber", imiNumber));
 		return (UserBean) criteria.uniqueResult();

@@ -1,0 +1,1 @@
+ALTER TABLE t_sink ADD INDEX reference_idx (snk_reference);

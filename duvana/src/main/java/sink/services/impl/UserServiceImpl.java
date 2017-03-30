@@ -9,12 +9,12 @@ import sink.services.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-
-	@Autowired
-	private UserDao userDao;
 	
-	public UserBean findByImiNumber(String imiNumber) {
-		return userDao.findByImiNumber(imiNumber);
+	@Autowired
+	private UserDao	userDao;
+	
+	public UserBean findByImeiNumber(String imeiNumber) {
+		return userDao.findByImeiNumber(imeiNumber);
 	}
-
+	
 }

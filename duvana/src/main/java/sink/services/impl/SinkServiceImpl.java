@@ -29,9 +29,9 @@ public class SinkServiceImpl implements SinkService {
 	private static final Logger	LOGGER	= LoggerFactory.getLogger(SinkServiceImpl.class);
 	
 	@Autowired
-	private SinkDao					sinkDao;	
+	private SinkDao					sinkDao;
 	@Autowired
-	private AddressDao				addressDao;	
+	private AddressDao				addressDao;
 	@Autowired
 	private ClientDao					clientDao;
 	
@@ -39,8 +39,7 @@ public class SinkServiceImpl implements SinkService {
 	public boolean checkReferenceExists(SinkBean sink, boolean stepBefore) {
 		ClientBean client = getClient(sink);
 		if (client != null) {
-			return findByReferenceAndClientAndStep(sink.getReference(),
-					client.getName(), stepBefore);
+			return findByReferenceAndClientAndStep(sink.getReference(), client.getName(), stepBefore);
 		}
 		return false;
 	}
@@ -56,7 +55,7 @@ public class SinkServiceImpl implements SinkService {
 					if (existingSink != null) {
 						
 						if (ProfileEnum.BEGIN.equals(profile)) {
-							if (existingSink.getImageBefore() != null) {								
+							if (existingSink.getImageBefore() != null) {
 								fileNamesMap.put(sink.getFileName(), false); // ref exists do not save
 							} else {
 								copyBeforerData(sink, existingSink); // ref exists but not image before -> update
@@ -65,7 +64,7 @@ public class SinkServiceImpl implements SinkService {
 						}
 						
 						if (ProfileEnum.END.equals(profile)) {
-							if (existingSink.getImageAfter() != null) {								
+							if (existingSink.getImageAfter() != null) {
 								fileNamesMap.put(sink.getFileName(), false); // ref exists do not save
 							} else {
 								copyAfterData(sink, existingSink); // ref exists but not image after -> update
@@ -80,7 +79,7 @@ public class SinkServiceImpl implements SinkService {
 						}
 					}
 				} else {
-					LOGGER.warn(String.format("Client for reference %s does not exists",	sink.getReference()));
+					LOGGER.warn(String.format("Client for reference %s does not exists", sink.getReference()));
 				}
 			}
 		}
@@ -91,8 +90,7 @@ public class SinkServiceImpl implements SinkService {
 	public SinkBean prepareAndSave(SinkBean sink, UserBean user) {
 		ClientBean client = getClient(sink);
 		if (client != null) {
-			SinkBean existingSink = sinkDao.findByReferenceAndClient(
-					sink.getReference(), client.getId());
+			SinkBean existingSink = sinkDao.findByReferenceAndClient(sink.getReference(), client.getId());
 			if (existingSink != null) {
 				// update
 				existingSink.setUserUpdate(user);
@@ -110,11 +108,9 @@ public class SinkServiceImpl implements SinkService {
 	}
 	
 	@Override
-	public ArrayList<SinkBean> findAllSinksByDateAnClientAndReference(Date startDate,
-			Date endDate, String clientName, String reference) {
+	public ArrayList<SinkBean> findAllSinksByDateAnClientAndReference(Date startDate, Date endDate, String clientName, String reference) {
 		return sinkDao.findAllSinksByDateAnClientAndReference(startDate, endDate, clientName, reference);
 	}
-		
 	
 	@Override
 	public boolean deleteSink(SinkBean sinkBean) {
@@ -126,14 +122,12 @@ public class SinkServiceImpl implements SinkService {
 	public SinkBean update(SinkBean sink, UserBean user) {
 		ClientBean client = getClient(sink);
 		if (client != null) {
-			SinkBean existingSink = sinkDao.findByReferenceAndClient(
-					sink.getReference(), client.getId());
+			SinkBean existingSink = sinkDao.findByReferenceAndClient(sink.getReference(), client.getId());
 			if (existingSink != null) {
 				// update
 				Blob imageBefore = existingSink.getImageBefore();
 				Blob imageAfter = existingSink.getImageAfter();
-				BeanUtils.copyProperties(sink, existingSink, "address", "client",
-						"id");
+				BeanUtils.copyProperties(sink, existingSink, "address", "client", "id");
 				if (sink.getImageBefore() == null) {
 					existingSink.setImageBefore(imageBefore);
 				}
@@ -151,13 +145,11 @@ public class SinkServiceImpl implements SinkService {
 	}
 	
 	@Override
-	public boolean findByReferenceAndClientAndStep(String reference,
-			String clientName, boolean stepBefore) {
+	public boolean findByReferenceAndClientAndStep(String reference, String clientName, boolean stepBefore) {
 		return sinkDao.findByReferenceAndClientAndStep(reference, clientName, stepBefore) != null;
 	}
 	
-	private void setClientAndAddressAndUser(SinkBean sink, ClientBean client,
-			UserBean user) {
+	private void setClientAndAddressAndUser(SinkBean sink, ClientBean client, UserBean user) {
 		sink.setClient(client);
 		sink.setUserCreation(user);
 		createAddress(sink);

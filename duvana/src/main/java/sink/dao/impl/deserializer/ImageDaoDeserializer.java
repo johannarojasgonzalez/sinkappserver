@@ -17,21 +17,19 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 
 @Transactional
 public class ImageDaoDeserializer extends JsonDeserializer<Blob> {
-
+	
 	@Autowired
-	private SessionFactory sessionFactory;
-
+	private SessionFactory	sessionFactory;
+	
 	@Override
-	public Blob deserialize(JsonParser jsonParser, DeserializationContext ctx)
-			throws IOException, JsonProcessingException {
+	public Blob deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException, JsonProcessingException {
 		String encodedImage = jsonParser.getText();
 		if (!StringUtils.isEmpty(encodedImage)) {
 			byte[] decodedByte = Base64.decodeBase64(encodedImage);
-			Blob blob = sessionFactory.getCurrentSession().getLobHelper()
-					.createBlob(decodedByte);
+			Blob blob = sessionFactory.getCurrentSession().getLobHelper().createBlob(decodedByte);
 			return blob;
 		}
 		return null;
 	}
-
+	
 }

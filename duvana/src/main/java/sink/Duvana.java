@@ -8,14 +8,14 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class Duvana {
-
+	
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Duvana.class, args);
 	}
 	
 	@Bean
 	public SessionFactory sessionFactory(HibernateEntityManagerFactory hemf) {
-	    return hemf.getSessionFactory();
+		return hemf.getSessionFactory();
 	}
-
+	
 }

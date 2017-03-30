@@ -3,6 +3,11 @@ package sink.services;
 import sink.bean.UserBean;
 
 public interface UserService {
-
-	UserBean findByImiNumber(String userId);
+	
+	/**
+	 * Find user by imeiNumber
+	 * @param imeiNumber
+	 * @return
+	 */
+	UserBean findByImeiNumber(String imeiNumber);
 }

@@ -8,8 +8,9 @@ import sink.bean.SinkBean;
 public interface SinkCustomDao {
 
 	/**
-	 * 
+	 * Find Sink by reference and client id
 	 * @param reference
+	 * @param clientId
 	 * @return
 	 */
 	SinkBean findByReferenceAndClient(String reference, Long clientId);
@@ -24,10 +25,13 @@ public interface SinkCustomDao {
 	 */
 	SinkBean findByReferenceAndClientAndStep(String reference, String clientName, boolean stepBefore);
 	
+
 	/**
-	 * 
+	 * Find beans by criteria
 	 * @param startDate
 	 * @param endDate
+	 * @param clientName
+	 * @param reference
 	 * @return
 	 */
 	ArrayList<SinkBean> findAllSinksByDateAnClientAndReference(Date startDate, Date endDate, String clientName, String reference);

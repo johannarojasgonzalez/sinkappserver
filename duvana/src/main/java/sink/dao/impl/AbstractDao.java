@@ -5,16 +5,12 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class AbstractDao {
-
+	
 	@Autowired
-	private SessionFactory sessionFactory;
+	private SessionFactory	sessionFactory;
 	
 	protected Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
 	
-//	protected Criteria getCriteria() {
-//		Type type = getClass().getGenericSuperclass();
-//		return getCurrentSession().createCriteria(type.getClass());
-//	}
 }

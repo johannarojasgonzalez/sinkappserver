@@ -19,15 +19,14 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 
 @Transactional
 public class ImageDaoSerializer extends JsonSerializer<Blob> {
-
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(ImageDaoSerializer.class);
+	
+	private static final Logger	LOGGER	= LoggerFactory.getLogger(ImageDaoSerializer.class);
 	
 	@Autowired
-	private SessionFactory sessionFactory;
-
+	private SessionFactory			sessionFactory;
+	
 	@Override
-	public void serialize(Blob value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {		
+	public void serialize(Blob value, JsonGenerator gen, SerializerProvider serializers) throws IOException, JsonProcessingException {
 		try {
 			byte[] ba;
 			ba = value.getBytes(1, Long.valueOf(value.length()).intValue());
@@ -35,8 +34,7 @@ public class ImageDaoSerializer extends JsonSerializer<Blob> {
 			gen.writeString(encodeBase64);
 		} catch (SQLException e) {
 			LOGGER.error("Error while serializing image" + e.getMessage());
-		} 
-				
+		}
 	}
-
+	
 }

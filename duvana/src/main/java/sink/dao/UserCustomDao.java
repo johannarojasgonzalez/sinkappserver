@@ -5,9 +5,9 @@ import sink.bean.UserBean;
 public interface UserCustomDao {
 
 	/**
-	 * 
-	 * @param imiNumber
+	 * Find user by imei number
+	 * @param imieNumber
 	 * @return
 	 */
-	UserBean findByImiNumber(String imiNumber);
+	UserBean findByImeiNumber(String imeiNumber);
 }
