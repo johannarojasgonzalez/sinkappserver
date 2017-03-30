@@ -11,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import sink.bean.SinkBean;
 import sink.dao.SinkCustomDao;
@@ -23,16 +24,27 @@ public class SinkDaoImpl extends AbstractDao implements SinkCustomDao {
 	private SessionFactory sessionFactory;
 
 	@SuppressWarnings("unchecked")
-	public ArrayList<SinkBean> findAllSinksByDateAnClient(Date startDate, Date endDate, String clientName) {
-		String strQuery = "FROM SinkBean WHERE sinkCreationDate BETWEEN :startDate AND :endDate AND client.name = :clientName";
+	@Override
+	public ArrayList<SinkBean> findAllSinksByDateAnClientAndReference(Date startDate, Date endDate, String clientName, String reference) {
+		String strQuery = "FROM sink.bean.SinkBean WHERE sinkCreationDate BETWEEN :startDate AND :endDate AND client.name = :clientName";
+		if(!StringUtils.isEmpty(reference)) {
+			strQuery += " AND reference = :reference";
+		}
 		Query query = getCurrentSession().createQuery(strQuery);
+		if(!StringUtils.isEmpty(reference)) {
+			strQuery += " AND reference = :reference";
+		}
 		query.setParameter("startDate", startDate);
 		query.setParameter("endDate", endDate);
 		query.setParameter("clientName", clientName);
+		if(!StringUtils.isEmpty(reference)) {
+			query.setParameter("reference", reference);
+		}
 		return (ArrayList<SinkBean>) query.list();
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public SinkBean findByReferenceAndClient(String reference, Long clientId) {
 		Query query = getCurrentSession().createQuery("FROM SinkBean WHERE reference = :reference AND client.id = :clientId");
 		query.setParameter("reference", reference);
@@ -46,6 +58,7 @@ public class SinkDaoImpl extends AbstractDao implements SinkCustomDao {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public SinkBean findByReferenceAndClientAndStep(String reference,
 			String clientName, boolean stepBefore) {
 		String strQuery = "FROM SinkBean WHERE reference = :reference AND client.name = :clientName";

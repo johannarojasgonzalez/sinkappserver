@@ -63,12 +63,13 @@ public class SinkController {
 		return null;
 	}
 	
-	@RequestMapping(value = "/search/{startDate}/{endDate}/{clientName}")
+	@RequestMapping(value = {"/search/{startDate}/{endDate}/{clientName}/{reference}", "/search/{startDate}/{endDate}/{clientName}/"})
 	@ResponseBody
 	public SinkBean[] search(
 			@PathVariable("startDate") @DateTimeFormat(pattern = DD_MM_YYYY) Date startDate,
 			@PathVariable("endDate") @DateTimeFormat(pattern = DD_MM_YYYY) Date endDate,
-			@PathVariable("clientName") String clientName) {
+			@PathVariable("clientName") String clientName,
+			@PathVariable(name = "reference", required = false) String reference) {
 		// check if reference exists
 		if (startDate == null) {
 			return null;
@@ -77,8 +78,8 @@ public class SinkController {
 		if (endDate == null) {
 			endDate = new DateTime().plusDays(1).withTimeAtStartOfDay().toDate();
 		}
-		ArrayList<SinkBean> results = sinkService.findAllSinksByDateAnClient(
-				startDate, endDate, clientName);
+		ArrayList<SinkBean> results = sinkService.findAllSinksByDateAnClientAndReference(
+				startDate, endDate, clientName, reference);
 		if (CollectionUtils.isEmpty(results)) {
 			return null;
 		}

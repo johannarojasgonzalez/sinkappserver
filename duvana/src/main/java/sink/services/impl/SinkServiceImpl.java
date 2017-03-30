@@ -35,6 +35,7 @@ public class SinkServiceImpl implements SinkService {
 	@Autowired
 	private ClientDao					clientDao;
 	
+	@Override
 	public boolean checkReferenceExists(SinkBean sink, boolean stepBefore) {
 		ClientBean client = getClient(sink);
 		if (client != null) {
@@ -44,6 +45,7 @@ public class SinkServiceImpl implements SinkService {
 		return false;
 	}
 	
+	@Override
 	public HashMap<String, Boolean> prepareAndSave(Set<SinkBean> sinks, UserBean user, ProfileEnum profile) {
 		HashMap<String, Boolean> fileNamesMap = new HashMap<String, Boolean>();
 		if (!CollectionUtils.isEmpty(sinks)) {
@@ -85,6 +87,7 @@ public class SinkServiceImpl implements SinkService {
 		return fileNamesMap;
 	}
 	
+	@Override
 	public SinkBean prepareAndSave(SinkBean sink, UserBean user) {
 		ClientBean client = getClient(sink);
 		if (client != null) {
@@ -106,11 +109,53 @@ public class SinkServiceImpl implements SinkService {
 		return null;
 	}
 	
-	public ArrayList<SinkBean> findAllSinksByDateAnClient(Date startDate,
-			Date endDate, String clientName) {
-		return sinkDao.findAllSinksByDateAnClient(startDate, endDate, clientName);
+	@Override
+	public ArrayList<SinkBean> findAllSinksByDateAnClientAndReference(Date startDate,
+			Date endDate, String clientName, String reference) {
+		return sinkDao.findAllSinksByDateAnClientAndReference(startDate, endDate, clientName, reference);
 	}
 		
+	
+	@Override
+	public boolean deleteSink(SinkBean sinkBean) {
+		sinkDao.delete(sinkBean.getId());
+		return !sinkDao.exists(sinkBean.getId());
+	}
+	
+	@Override
+	public SinkBean update(SinkBean sink, UserBean user) {
+		ClientBean client = getClient(sink);
+		if (client != null) {
+			SinkBean existingSink = sinkDao.findByReferenceAndClient(
+					sink.getReference(), client.getId());
+			if (existingSink != null) {
+				// update
+				Blob imageBefore = existingSink.getImageBefore();
+				Blob imageAfter = existingSink.getImageAfter();
+				BeanUtils.copyProperties(sink, existingSink, "address", "client",
+						"id");
+				if (sink.getImageBefore() == null) {
+					existingSink.setImageBefore(imageBefore);
+				}
+				if (sink.getImageAfter() == null) {
+					existingSink.setImageBefore(imageAfter);
+				}
+				
+				existingSink.setAddress(createAddress(sink));
+				existingSink.setSinkUpdateDate(new Date());
+				existingSink.setUserUpdate(user);
+				return sinkDao.save(existingSink);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean findByReferenceAndClientAndStep(String reference,
+			String clientName, boolean stepBefore) {
+		return sinkDao.findByReferenceAndClientAndStep(reference, clientName, stepBefore) != null;
+	}
+	
 	private void setClientAndAddressAndUser(SinkBean sink, ClientBean client,
 			UserBean user) {
 		sink.setClient(client);
@@ -157,38 +202,6 @@ public class SinkServiceImpl implements SinkService {
 			}
 		}
 		return client;
-	}
-	
-	public boolean deleteSink(SinkBean sinkBean) {
-		sinkDao.delete(sinkBean.getId());
-		return !sinkDao.exists(sinkBean.getId());
-	}
-	
-	public SinkBean update(SinkBean sink, UserBean user) {
-		ClientBean client = getClient(sink);
-		if (client != null) {
-			SinkBean existingSink = sinkDao.findByReferenceAndClient(
-					sink.getReference(), client.getId());
-			if (existingSink != null) {
-				// update
-				Blob imageBefore = existingSink.getImageBefore();
-				BeanUtils.copyProperties(sink, existingSink, "address", "client",
-						"id");
-				if (existingSink.getImageBefore() == null) {
-					existingSink.setImageBefore(imageBefore);
-				}
-				existingSink.setAddress(createAddress(sink));
-				existingSink.setSinkUpdateDate(new Date());
-				existingSink.setUserUpdate(user);
-				return sinkDao.save(existingSink);
-			}
-		}
-		return null;
-	}
-	
-	public boolean findByReferenceAndClientAndStep(String reference,
-			String clientName, boolean stepBefore) {
-		return sinkDao.findByReferenceAndClientAndStep(reference, clientName, stepBefore) != null;
 	}
 	
 }
