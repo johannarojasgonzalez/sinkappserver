@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 @Table(name = "T_ADDRESS")
 public class AddressBean implements Serializable {
@@ -86,5 +88,11 @@ public class AddressBean implements Serializable {
 	public void setNeighborhood(String neighborhood) {
 		this.neighborhood = neighborhood;
 	}
+
+//	@Override
+//	public String toString() {
+//		return street + "," + city ;
+//	}
+	
 	
 }

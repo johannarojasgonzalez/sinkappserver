@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- <link href="../static/css/duvana.css" th:href="@{../css/duvana.css}" rel="stylesheet" media="screen" /> -->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+<title>Sumideros DUVANA</title>
+
+<div layout:fragment="content">
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<td>Referencia</td>
+				<td>Tipo</td>
+				<td>Estado</td>
+				<td>Sondeo</td>
+				<td>Diametro</td>
+				<td>Cliente</td>
+				<td>Direccion</td>
+				<td>Observaciones</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${sinks.empty}">
+				<td colspan="4">No hay resultados</td>
+			</tr>
+			<tr th:each="sink : ${sinks}">
+				<td th:text="${sink.reference}">Referencia ...</td>
+				<td th:text="${sink.sinkType != null} ? ${sink.sinkType.label} : ''">Tipo...</td>
+				<td th:text="${sink.status != null} ? ${sink.status.label} : ''">Estado...</td>
+				<td th:text="${sink.plumbOption != null} ? ${sink.plumbOption.label} : ''">Sondeo...</td>
+				<td th:text="${sink.diameter != null} ? ${sink.diameter.label} : ''">Diametro...</td>
+				<td th:text="${sink.client}">Cliente ...</td>
+				<td th:text="${sink.address}">Direccion ...</td>
+				<td th:text="${sink.observations}">Observaciones ...</td>
+			</tr>
+		</tbody>
+	</table>
+	<a href="/search">Lanzar otra busqueda</a>
+</div>
+</head>
+</html>

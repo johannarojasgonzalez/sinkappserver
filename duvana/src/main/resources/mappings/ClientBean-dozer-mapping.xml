@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+	xsi:schemaLocation="http://dozer.sourceforge.net http://dozer.sourceforge.net/schema/beanmapping.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<mapping wildcard="true">
+		<class-a>sink.bean.ClientBean</class-a>
+		<class-b>sink.view.bean.ClientViewBean</class-b>
+	</mapping>
+</mappings>

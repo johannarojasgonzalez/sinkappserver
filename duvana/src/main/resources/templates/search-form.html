@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Getting Started: Handling Form Submission</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<div class="col-sm-10">
+	<h1>Busqueda de datos</h1>
+</div>
+<form action="#" th:action="@{/search}" th:object="${sinkViewBean}"	method="post" class="form-horizontal">		
+		<div class="col-sm-10">			
+			<label class="label label-default" for="reference">Referencia :</label>
+    		<input type="text" th:field="*{reference}" class="form-control" />
+		</div>
+		<div class="col-sm-10">
+			<label class="label label-default" for="reference"></label>
+		</div>	
+		<div class="col-sm-10">
+			<label for="desde">Desde :</label>
+    		<input type="date" th:field="*{startDate}" class="form-control"/>
+		</div>
+		<div class="col-sm-10">
+			<label class="label label-default" for="reference"></label>
+		</div>
+		<div class="col-sm-10">
+			<label for="hasta">Hasta :</label>
+    		<input type="date" th:field="*{endDate}" class="form-control"/>
+		</div>
+		<div class="col-sm-10">
+			<label class="label label-default" for="reference"></label>
+		</div>
+		<div class="col-sm-10">
+			<label for="cliente">Cliente :</label>
+			<select	th:field="*{clients}" class="form-control">
+				<option th:each="type : ${clients}" th:value="${{type}}"
+					th:text="${type.name}">Wireframe</option>
+			</select>
+		</div>
+		<div class="col-sm-10">
+			<label class="label label-default" for="reference"></label>
+		</div>
+		<div class="col-sm-10">
+			<input type="submit" value="Buscar" class="btn btn-info"/>
+		</div>
+<!-- 		<p> -->
+<!-- 			Reference : <input type="text" th:field="*{reference}" /> -->
+<!-- 			Desde : <input type="date" th:field="*{startDate}" /> -->
+<!-- 			Hasta : <input type="date" th:field="*{endDate}" /> -->
+<!-- 			<select -->
+<!-- 				th:field="*{clients}"> -->
+<!-- 				<option th:each="type : ${clients}" th:value="${{type}}" -->
+<!-- 					th:text="${type.name}">Wireframe</option> -->
+<!-- 			</select> -->
+<!-- 			<input type="submit" value="Buscar" class="btn btn-info"/>  -->
+<!-- 			<input type="reset"	value="Limpiar" class="btn btn-info"/> -->
+<!-- 		</p> -->
+	</form>
+</head>
+</html>

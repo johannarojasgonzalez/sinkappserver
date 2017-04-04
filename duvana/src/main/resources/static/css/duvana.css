@@ -1,0 +1,14 @@
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+	background-color: #ffffff;
+}
+
+.table {
+	font-size: 12px;
+	font-family: Verdana, arial, helvetica, sans-serif;
+	color: #eeeeee;
+	text-align: center;
+	font-weight: bold;
+	background-color: #666666;
+}

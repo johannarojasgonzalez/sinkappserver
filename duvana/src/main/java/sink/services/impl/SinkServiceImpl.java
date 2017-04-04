@@ -132,7 +132,7 @@ public class SinkServiceImpl implements SinkService {
 					existingSink.setImageBefore(imageBefore);
 				}
 				if (sink.getImageAfter() == null) {
-					existingSink.setImageBefore(imageAfter);
+					existingSink.setImageAfter(imageAfter);
 				}
 				
 				existingSink.setAddress(createAddress(sink));
