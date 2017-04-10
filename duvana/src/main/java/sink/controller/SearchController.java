@@ -1,7 +1,6 @@
 package sink.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -14,14 +13,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import sink.bean.ClientBean;
 import sink.bean.SinkBean;
 import sink.services.ClientService;
 import sink.services.SinkService;
+import sink.view.ExcelView;
 import sink.view.bean.ClientViewBean;
 import sink.view.bean.CriteriaViewBean;
 import sink.view.bean.SinkViewBean;
@@ -36,49 +36,18 @@ public class SearchController {
 	@Autowired
 	private Mapper				mapper;
 	
-	@ModelAttribute("sinks")
-	@RequestMapping(value = "/search-results", method = RequestMethod.GET)
-	public List<SinkViewBean> findAll() {
-		DateTime startDate = DateTime.now().minusDays(1).withTimeAtStartOfDay();
-		DateTime endDate = DateTime.now().withTimeAtStartOfDay();
-		ArrayList<SinkBean> sinks = sinkService.findAllSinksByDateAnClientAndReference(startDate.toDate(), endDate.toDate(),
-				"Consorcio Sumideros Bogota", "");
-		List<SinkViewBean> sinkViewBeans = new ArrayList<>();
-		for (SinkBean sinkBean : sinks) {
-			sinkViewBeans.add(mapper.map(sinkBean, SinkViewBean.class));
-		}
-		return sinkViewBeans;
-	}
-	
-	
-//	@RequestMapping(value="/search", method=RequestMethod.GET)
-//	public String greeting(SinkViewBean sinkViewBean) {
-//		sinkViewBean.setReference("2806");
-//		return "search-form";
-//	}
-	
+		
 	@RequestMapping(value = "/search", method = RequestMethod.GET) 
 	public String search(Model model) {
 		CriteriaViewBean criteriaViewBean = new CriteriaViewBean();
 		poupulateClients(criteriaViewBean);
-		model.addAttribute("sinkViewBean", criteriaViewBean);
+		model.addAttribute("criteria", criteriaViewBean);
 		model.addAttribute("clients", criteriaViewBean.getClients());
 		return "search-form"; 
 	}
 
-	private void poupulateClients(CriteriaViewBean criteriaViewBean) {
-		List<ClientViewBean> clientsView = new ArrayList<>();
-		ArrayList<ClientBean> clients = clientService.findAll();
-		if(CollectionUtils.isNotEmpty(clients)) {
-			for(ClientBean client : clients) {
-				clientsView.add(mapper.map(client, ClientViewBean.class));
-			}
-		}
-		criteriaViewBean.setClients(clientsView);
-	}
- 
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	public String addNewPost(@Valid CriteriaViewBean criteriaViewBean, BindingResult bindingResult, Model model) {
+	public String launchSearch(@Valid CriteriaViewBean criteriaViewBean, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			return "search-form";
 		}
@@ -91,7 +60,9 @@ public class SearchController {
 		String clienName = StringUtils.EMPTY;
 		
 		if (CollectionUtils.isNotEmpty(criteriaViewBean.getClients())) {
-			clienName = criteriaViewBean.getClients().iterator().next().getName();
+			ClientViewBean selectedClient = criteriaViewBean.getClients().iterator().next();
+			clienName = selectedClient.getName();
+			criteriaViewBean.setSelectedClient(selectedClient);
 		}
 		ArrayList<SinkBean> sinks = sinkService.findAllSinksByDateAnClientAndReference(startDate.toDate(), endDate.toDate(), clienName,
 				criteriaViewBean.getReference() != null ? criteriaViewBean.getReference() : StringUtils.EMPTY);
@@ -101,8 +72,36 @@ public class SearchController {
 		}
 		
 		model.addAttribute("sinks", sinkViewBeans);
-		
+		model.addAttribute("criteria", criteriaViewBean);
 		return "search-results";
+	}
+	
+	@RequestMapping(value = "/downloadExcel", method = RequestMethod.POST)
+	public ModelAndView downloadExcel(@Valid CriteriaViewBean criteriaViewBean, BindingResult bindingResult, Model model) {
+		
+		DateTime today = new DateTime().withTimeAtStartOfDay();
+		
+		DateTime startDate = criteriaViewBean.getStartDate() != null ? new DateTime(criteriaViewBean.getStartDate().getTime()).withTimeAtStartOfDay()
+				: today;
+		DateTime endDate = criteriaViewBean.getEndDate() != null ? new DateTime(criteriaViewBean.getEndDate().getTime()).withTimeAtStartOfDay() : today;
+		
+		ArrayList<SinkBean> sinks = sinkService.findAllSinksByDateAnClientAndReference(startDate.toDate(), endDate.toDate(),
+				criteriaViewBean.getSelectedClient() != null ? criteriaViewBean.getSelectedClient().getName() : StringUtils.EMPTY,
+				criteriaViewBean.getReference() != null ? criteriaViewBean.getReference() : StringUtils.EMPTY);
+		// return a view which will be resolved by an excel view resolver
+		model.addAttribute("sinks", sinks);
+		return new ModelAndView(new ExcelView());
+	}
+	
+	private void poupulateClients(CriteriaViewBean criteriaViewBean) {
+		List<ClientViewBean> clientsView = new ArrayList<>();
+		ArrayList<ClientBean> clients = clientService.findAll();
+		if(CollectionUtils.isNotEmpty(clients)) {
+			for(ClientBean client : clients) {
+				clientsView.add(mapper.map(client, ClientViewBean.class));
+			}
+		}
+		criteriaViewBean.setClients(clientsView);
 	}
 	
 }

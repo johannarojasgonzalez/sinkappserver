@@ -16,10 +16,12 @@
 		<thead>
 			<tr>
 				<td>Referencia</td>
-				<td>Tipo</td>
 				<td>Estado</td>
-				<td>Sondeo</td>
+				<td>Tipo</td>
+				<td>Longitud</td>
 				<td>Diametro</td>
+				<td>Sondeo</td>
+				<td>Longitud</td>
 				<td>Cliente</td>
 				<td>Direccion</td>
 				<td>Observaciones</td>
@@ -31,17 +33,30 @@
 			</tr>
 			<tr th:each="sink : ${sinks}">
 				<td th:text="${sink.reference}">Referencia ...</td>
-				<td th:text="${sink.sinkType != null} ? ${sink.sinkType.label} : ''">Tipo...</td>
 				<td th:text="${sink.status != null} ? ${sink.status.label} : ''">Estado...</td>
-				<td th:text="${sink.plumbOption != null} ? ${sink.plumbOption.label} : ''">Sondeo...</td>
+				<td th:text="${sink.sinkType != null} ? ${sink.sinkType.label} : ''">Tipo...</td>
+				<td th:text="${sink.length != null} ? ${sink.sinkType.length} : ''">Longitud...</td>
 				<td th:text="${sink.diameter != null} ? ${sink.diameter.label} : ''">Diametro...</td>
+				<td th:text="${sink.plumbOption != null} ? ${sink.plumbOption.label} : ''">Sondeo...</td>
+				<td th:text="${sink.pipeLineLength != null} ? ${sink.sinkType.pipeLineLength} : ''">Longitud...</td>
 				<td th:text="${sink.client}">Cliente ...</td>
 				<td th:text="${sink.address}">Direccion ...</td>
 				<td th:text="${sink.observations}">Observaciones ...</td>
 			</tr>
 		</tbody>
 	</table>
-	<a href="/search">Lanzar otra busqueda</a>
+	<div class="btn-group" role="group" aria-label="Basic example">
+		<a href="/search" class="btn btn-secondary">Lanzar otra busqueda</a>
+		<div th:if="${not #lists.isEmpty(sinks)}">
+			<form th:action="@{/downloadExcel}" th:object="${criteria}" method="post">
+				<input type="hidden" th:field="*{reference}" />
+				<input type="hidden" th:field="*{startDate}" />
+				<input type="hidden" th:field="*{endDate}" />
+				<input type="hidden" th:field="*{selectedClient}" />
+				<input type="submit" value="Descargar archivo" class="btn btn-secondary"/>
+			</form>
+		</div>
+	</div>
 </div>
 </head>
 </html>

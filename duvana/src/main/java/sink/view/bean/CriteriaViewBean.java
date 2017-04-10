@@ -14,7 +14,7 @@ public class CriteriaViewBean implements Serializable {
 	private static final long		serialVersionUID	= 1L;
 	
 	private String						reference;
-	private ClientViewBean			client;
+	private ClientViewBean			selectedClient;
 	private List<ClientViewBean>	clients;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date						startDate;
@@ -52,15 +52,13 @@ public class CriteriaViewBean implements Serializable {
 	public void setClients(List<ClientViewBean> clients) {
 		this.clients = clients;
 	}
-
-	public ClientViewBean getClient() {
-		return client;
-	}
-
-	public void setClient(ClientViewBean client) {
-		this.client = client;
+	
+	public ClientViewBean getSelectedClient() {
+		return selectedClient;
 	}
 	
-	
+	public void setSelectedClient(ClientViewBean selectedClient) {
+		this.selectedClient = selectedClient;
+	}
 	
 }
