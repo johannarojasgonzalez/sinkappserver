@@ -2,16 +2,23 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<!-- <link href="../static/css/duvana.css" th:href="@{../css/duvana.css}" rel="stylesheet" media="screen" /> -->
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+	crossorigin="anonymous" />
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+	integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+	integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
 
 <title>Sumideros DUVANA</title>
 
-<div layout:fragment="content">
+<div class="container" layout:fragment="content">
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -35,10 +42,12 @@
 				<td th:text="${sink.reference}">Referencia ...</td>
 				<td th:text="${sink.status != null} ? ${sink.status.label} : ''">Estado...</td>
 				<td th:text="${sink.sinkType != null} ? ${sink.sinkType.label} : ''">Tipo...</td>
-				<td th:text="${sink.length != null} ? ${sink.sinkType.length} : ''">Longitud...</td>
+				<td th:text="${sink.length != null} ? ${sink.length} : ''">Longitud...</td>
 				<td th:text="${sink.diameter != null} ? ${sink.diameter.label} : ''">Diametro...</td>
-				<td th:text="${sink.plumbOption != null} ? ${sink.plumbOption.label} : ''">Sondeo...</td>
-				<td th:text="${sink.pipeLineLength != null} ? ${sink.sinkType.pipeLineLength} : ''">Longitud...</td>
+				<td
+					th:text="${sink.plumbOption != null} ? ${sink.plumbOption.label} : ''">Sondeo...</td>
+				<td
+					th:text="${sink.pipeLineLength != null} ? ${sink.pipeLineLength} : ''">Longitud...</td>
 				<td th:text="${sink.client}">Cliente ...</td>
 				<td th:text="${sink.address}">Direccion ...</td>
 				<td th:text="${sink.observations}">Observaciones ...</td>
@@ -46,14 +55,15 @@
 		</tbody>
 	</table>
 	<div class="btn-group" role="group" aria-label="Basic example">
-		<a href="/search" class="btn btn-secondary">Lanzar otra busqueda</a>
+		<a href="/duvana/search" class="btn btn-secondary">Lanzar otra busqueda</a>
 		<div th:if="${not #lists.isEmpty(sinks)}">
-			<form th:action="@{/downloadExcel}" th:object="${criteria}" method="post">
-				<input type="hidden" th:field="*{reference}" />
-				<input type="hidden" th:field="*{startDate}" />
-				<input type="hidden" th:field="*{endDate}" />
-				<input type="hidden" th:field="*{selectedClient}" />
-				<input type="submit" value="Descargar archivo" class="btn btn-secondary"/>
+			<form th:action="@{/duvana/downloadExcel}" th:object="${criteria}"
+				method="post">
+				<input type="hidden" th:field="*{reference}" /> <input
+					type="hidden" th:field="*{startDate}" /> <input type="hidden"
+					th:field="*{endDate}" /> <input type="hidden"
+					th:field="*{selectedClient}" /> <input type="submit"
+					value="Descargar archivo" class="btn btn-secondary" />
 			</form>
 		</div>
 	</div>

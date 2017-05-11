@@ -3,48 +3,47 @@
 <head>
 <title>Sumideros DUVANA</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
-<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-<div class="col-sm-10" style="margin-bottom: 20px">
-	<h3>Busqueda de datos</h3>
-</div>
-<form action="#" th:action="@{/search}" th:object="${criteria}"	method="post" class="form-horizontal">		
-		<div class="col-sm-10">			
-			<label class="label label-default" for="reference">Referencia :</label>
-    		<input type="text" th:field="*{reference}" class="form-control" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css"
+	integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ"
+	crossorigin="anonymous" />
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"
+	integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
+	integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" />
+<h1 class="text-center" style="margin-top: 100px;">Busqueda de
+	datos</h1>
+<div class="container">
+	<form action="#" th:action="@{/duvana/search}" th:object="${criteria}"
+		method="post" class="col-6 mx-auto">
+		<div class="form-group">
+			<label class="label label-default" for="reference">Referencia
+				:</label> <input type="text" th:field="*{reference}" class="form-control" />
 		</div>
-		<div class="col-sm-10">
-			<label class="label label-default" for="reference"></label>
-		</div>	
-		<div class="col-sm-10">
-			<label for="desde">Desde :</label>
-    		<input type="date" th:field="*{startDate}" class="form-control"/>
+		<div class="form-group">
+			<label for="desde">Desde :</label> <input type="date"
+				th:field="*{startDate}" class="form-control" />
 		</div>
-		<div class="col-sm-10">
-			<label class="label label-default" for="reference"></label>
+		<div class="form-group">
+			<label for="hasta">Hasta :</label> <input type="date"
+				th:field="*{endDate}" class="form-control" />
 		</div>
-		<div class="col-sm-10">
-			<label for="hasta">Hasta :</label>
-    		<input type="date" th:field="*{endDate}" class="form-control"/>
-		</div>
-		<div class="col-sm-10">
-			<label class="label label-default" for="reference"></label>
-		</div>
-		<div class="col-sm-10">
-			<label for="cliente">Cliente :</label>
-			<select	th:field="*{clients}" class="form-control">
+		<div class="form-group">
+			<label for="cliente">Cliente :</label> <select th:field="*{clients}"
+				class="form-control">
 				<option th:each="client: ${clients}" th:value="${{client}}"
 					th:text="${client.name}" />
 			</select>
 		</div>
-		<div class="col-sm-10">
-			<label class="label label-default" for="reference"></label>
-		</div>
-		<div class="col-sm-10">
-			<input type="submit" value="Buscar" class="btn btn-info"/>
+		<div class="form-group">
+			<input type="submit" value="Buscar" class="btn btn-primary" />
 		</div>
 	</form>
+</div>
 </head>
 </html>

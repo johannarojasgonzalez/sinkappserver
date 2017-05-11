@@ -45,7 +45,10 @@ public class SinkController {
 			return 0L;
 		}
 		UserBean user = getSavedUser(userImi);
-		if (user != null) {
+		if (user == null) {
+			LOGGER.warn("Imi is not in database : " + userImi);
+		}
+		//if (user != null) {
 			SinkBean createdSink;
 			if (Boolean.valueOf(updateAll)) {
 				createdSink = sinkService.update(sink, user);
@@ -53,9 +56,9 @@ public class SinkController {
 				createdSink = sinkService.prepareAndSave(sink, user);
 			}
 			return createdSink != null ? createdSink.getId() : null;
-		}
-		LOGGER.warn(String.format("The user %s is not known", userImi));
-		return null;
+		//}
+		//LOGGER.warn(String.format("The user %s is not known", userImi));
+		//return null;
 	}
 	
 	@RequestMapping(value = { "/search/{startDate}/{endDate}/{clientName}/{reference}", "/search/{startDate}/{endDate}/{clientName}/" })
@@ -99,12 +102,13 @@ public class SinkController {
 	@ResponseBody
 	public Map<String, Boolean> saveFromFile(@PathVariable("userImi") String userImi, @PathVariable("profile") String profile,
 			@RequestBody Set<SinkBean> sinks) {
-		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+		//HashMap<String, Boolean> map = new HashMap<String, Boolean>();
 		UserBean user = getSavedUser(userImi);
-		if (user != null) {
-			return sinkService.prepareAndSave(sinks, user, ProfileEnum.getProfileEnum(profile));
+		if (user == null) {
+			LOGGER.warn("Imi is not in database : " + userImi);
 		}
-		return map;
+		return sinkService.prepareAndSave(sinks, user, ProfileEnum.getProfileEnum(profile));
+		//return map;
 	}
 	
 	private UserBean getSavedUser(String userImi) {

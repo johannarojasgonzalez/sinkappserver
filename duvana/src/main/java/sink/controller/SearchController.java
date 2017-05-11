@@ -37,7 +37,7 @@ public class SearchController {
 	private Mapper				mapper;
 	
 		
-	@RequestMapping(value = "/search", method = RequestMethod.GET) 
+	@RequestMapping(value = "/duvana/search", method = RequestMethod.GET) 
 	public String search(Model model) {
 		CriteriaViewBean criteriaViewBean = new CriteriaViewBean();
 		poupulateClients(criteriaViewBean);
@@ -46,7 +46,7 @@ public class SearchController {
 		return "search-form"; 
 	}
 
-	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	@RequestMapping(value = "/duvana/search", method = RequestMethod.POST)
 	public String launchSearch(@Valid CriteriaViewBean criteriaViewBean, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
 			return "search-form";
@@ -76,7 +76,7 @@ public class SearchController {
 		return "search-results";
 	}
 	
-	@RequestMapping(value = "/downloadExcel", method = RequestMethod.POST)
+	@RequestMapping(value = "/duvana/downloadExcel", method = RequestMethod.POST)
 	public ModelAndView downloadExcel(@Valid CriteriaViewBean criteriaViewBean, BindingResult bindingResult, Model model) {
 		
 		DateTime today = new DateTime().withTimeAtStartOfDay();
