@@ -29,11 +29,11 @@ public class SinkServiceImpl implements SinkService {
 	private static final Logger	LOGGER	= LoggerFactory.getLogger(SinkServiceImpl.class);
 	
 	@Autowired
-	private SinkDao					sinkDao;
+	private SinkDao sinkDao;
 	@Autowired
-	private AddressDao				addressDao;
+	private AddressDao addressDao;
 	@Autowired
-	private ClientDao					clientDao;
+	private ClientDao clientDao;
 	
 	@Override
 	public boolean checkReferenceExists(SinkBean sink, boolean stepBefore) {
@@ -74,6 +74,7 @@ public class SinkServiceImpl implements SinkService {
 					} else {
 						// create
 						setClientAndAddressAndUser(sink, client, user);
+						sink.setSinkCreationDate(new Date());
 						if (sinkDao.save(sink) != null) {
 							fileNamesMap.put(sink.getFileName(), true);
 						}
@@ -101,6 +102,7 @@ public class SinkServiceImpl implements SinkService {
 				}
 			} else {
 				setClientAndAddressAndUser(sink, client, user);
+				sink.setSinkCreationDate(new Date());
 				return sinkDao.save(sink);
 			}
 		}
@@ -180,8 +182,7 @@ public class SinkServiceImpl implements SinkService {
 	private SinkBean copyBeforerData(SinkBean sink, SinkBean existingSink) {
 		existingSink.setImageBefore(sink.getImageBefore());
 		existingSink.setSinkUpdateDate(new Date());
-		SinkBean save = sinkDao.save(existingSink);
-		return save;
+		return sinkDao.save(existingSink);
 	}
 	
 	private ClientBean getClient(SinkBean sink) {
